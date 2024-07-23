@@ -1,0 +1,206 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(898deg, #2e2e2e, #f2ff62, orange);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+}
+
+a {
+    text-decoration: none;
+    color: #b3b3b3;
+}
+
+.container {
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    margin: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    background: linear-gradient(135deg, #2e2e2e, #1a1a1a);
+}
+
+.points {
+    margin-bottom: 20px;
+}
+
+.points h2 {
+    font-size: 1.2rem;
+    color: #b3b3b3;
+}
+
+.points h1 {
+    font-size: 2.5rem;
+    margin: 5px 0;
+}
+
+.boosts {
+    text-align: left;
+    margin: 20px 0;
+}
+
+.boosts h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.boost {
+    background: #444;
+    border-radius: 10px;
+    margin: 20px 0;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s;
+}
+
+.boost:hover {
+    background: #555;
+}
+
+.boost-info {
+    display: flex;
+    align-items: center;
+}
+
+.boost-info img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+.boost-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.boost-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.boost-level {
+    color: #b3b3b3;
+}
+
+.boost-cost {
+    display: flex;
+    align-items: center;
+}
+
+.boost-cost span {
+    font-size: 1.2rem;
+    margin-right: 10px;
+}
+
+.boost-cost img {
+    width: 20px;
+    height: 20px;
+}
+
+.navigation {
+    display: flex;
+    justify-content: space-around;
+    background: #222;
+    padding: 10px 0;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
+.nav-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    transition: background-color 0.3s;
+}
+
+.nav-button img {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 5px;
+}
+
+.nav-button span {
+    font-size: 0.9rem;
+    color: #fff;
+}
+
+.nav-button.active {
+    background: #fdd835;
+    border-radius: 10px;
+}
+
+.nav-button.active span {
+    color: #333;
+}
+
+.nav-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+/* Стили для модального окна */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: hidden; 
+    background-color: rgba(0, 0, 0, 0.5); 
+}
+
+.modal-content {
+    background-color: #2e2e2e;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 300px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    color: white;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#buy-boost {
+    background-color: #fdd835;
+    border: none;
+    color: #333;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#buy-boost:hover {
+    background-color: #e6c229;
+}

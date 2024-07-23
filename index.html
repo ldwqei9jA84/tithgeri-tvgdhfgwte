@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Выбор языка</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #121212;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+        }
+        .container {
+            text-align: center;
+            padding: 30px;
+            border-radius: 15px;
+            background-color: #1e1e1e;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+        }
+        .button {
+            display: block;
+            width: 260px;
+            margin: 20px auto;
+            padding: 15px;
+            background-color: #f39c12;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .button:hover {
+            background-color: #e67e22;
+            transform: translateY(-2px);
+        }
+        .button:active {
+            transform: translateY(0);
+        }
+        .main-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+            background-color: #2c3e50;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            margin-top: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 20px;
+            background-color: #34495e;
+            border-radius: 15px 15px 0 0;
+        }
+        .header img {
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+        }
+        .header span {
+            margin-left: 15px;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .header div:last-child {
+            font-size: 28px;
+            color: #f39c12;
+        }
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 30px 0;
+        }
+        .content img {
+            width: 220px;
+            height: 220px;
+            border: 5px solid #333;
+            border-radius: 25px;
+            object-fit: cover;
+        }
+        .content div {
+            font-size: 28px;
+            margin-top: 20px;
+            color: #f39c12;
+            padding: 15px 25px;
+            background-color: #34495e;
+            border-radius: 15px;
+        }
+        .footer {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+            padding: 20px;
+            background-color: #34495e;
+            border-radius: 0 0 15px 15px;
+        }
+        .footer button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .footer button:hover {
+            color: #f39c12;
+            transform: scale(1.1);
+        }
+        .footer button:active {
+            transform: scale(0.9);
+        }
+        .file-input {
+            margin: 30px 0;
+            color: #f39c12;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="content">
+        <div>
+            <h1>Выберите язык</h1>
+        </div>
+        <button class="button" onclick="switchToRussian()">Русский</button>
+        <button class="button" onclick="switchToEnglish()">English</button>
+    </div>
+
+    <script>
+        let userName = localStorage.getItem('userName') || 'Nikk';
+        let userPhoto = localStorage.getItem('userPhoto') || 'default-avatar.png';
+
+        document.addEventListener("DOMContentLoaded", function() {
+            if (localStorage.getItem('userVisited')) {
+                navigateToMain();
+            }
+        });
+
+        function switchToRussian() {
+            document.getElementById('content').innerHTML = `
+                <img src="${userPhoto}" alt="Avatar" style="width: 120px; height: 120px;" id="avatar">
+                <h1 id="userName">${userName}</h1>
+                <button class="button" onclick="addPhoto()">Добавить фото</button>
+                <button class="button" onclick="changeName()">Изменить имя</button>
+                <button class="button" onclick="navigateToMain()">Продолжить</button>
+            `;
+        }
+
+        function switchToEnglish() {
+            // Реализуйте версию на английском, если нужно
+        }
+
+        function addPhoto() {
+            document.getElementById('content').innerHTML = `
+                <input type="file" class="file-input" id="fileInput" accept="image/*" onchange="previewPhoto(event)">
+                <button class="button" onclick="switchToRussian()">Назад</button>
+            `;
+        }
+
+        function previewPhoto(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                userPhoto = reader.result;
+                localStorage.setItem('userPhoto', userPhoto);
+                switchToRussian();
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        function changeName() {
+            const newName = prompt('Введите новое имя:', userName);
+            if (newName) {
+                userName = newName;
+                localStorage.setItem('userName', userName);
+                switchToRussian();
+            }
+        }
+
+        function navigateToMain() {
+            localStorage.setItem('userVisited', true);
+            document.getElementById('content').innerHTML = `
+                <div class="main-page">
+                    <div class="header">
+                        <div>
+                            <img src="${userPhoto}" alt="Avatar">
+                            <span>${userName}</span>
+                        </div>
+                        <div>
+                            <span>300.000</span>
+                            <span>($)</span>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <img src="image-placeholder.png" alt="Main Content">
+                        <div>07.59.45</div>
+                    </div>
+                    <div class="footer">
+                        <button>
+                            🏪
+                            <span>Магазин</span>
+                        </button>
+                        <button>
+                            📋
+                            <span>Заметки</span>
+                        </button>
+                        <button>
+                            📈
+                            <span>Статистика</span>
+                        </button>
+                        <button>
+                            🐮
+                            <span>Ферма</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

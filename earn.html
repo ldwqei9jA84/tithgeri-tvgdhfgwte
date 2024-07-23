@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заработать больше монет</title>
+    <link rel="stylesheet" href="stylesm.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="mine-icon.png" alt="Earn Icon">
+            <h1>Earn more coins</h1>
+        </div>
+        <div class="channels">
+            <h2>Channels</h2>
+            <div class="channel" data-channel="channel1">
+                <img src="telegram.png" alt="Avatar" class="channel-avatar">
+                <div class="channel-info">
+                    <span class="channel-name">Telegram Chanel</span>
+                    <span class="channel-prompt">+150</span>
+                </div>
+                <button class="subscribe-button" data-link="https://t.me/Axel_Rabbit">Subscribe</button>
+            </div>
+            <div class="channel" data-channel="channel2">
+                <img src="instagram.png" alt="Avatar" class="channel-avatar">
+                <div class="channel-info">
+                    <span class="channel-name">Instagram Chanel</span>
+                    <span class="channel-prompt">+150</span>
+                </div>
+                <button class="subscribe-button" data-link="https://example.com/channel2">Subscribe</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <div class="nav-button">
+            <img src="game-icon.png" alt="Miner Icon">
+            <a href="index.html"><span>Game</span></a>
+        </div>
+    
+        <div class="nav-button active">
+            <img src="mine-icon.png" alt="Earn Icon">
+            <span>Earn</span>
+        </div>
+        <div class="nav-button">
+            <img src="boost-icon.png" alt="Boost Icon">
+            <a href="boost.html"><span>Boost</span></a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const buttons = document.querySelectorAll('.subscribe-button');
+
+            buttons.forEach(button => {
+                const channel = button.closest('.channel').dataset.channel;
+                if (localStorage.getItem(`subscribed_${channel}`) === 'true') {
+                    button.innerText = 'Completed';
+                    button.disabled = true;
+                }
+
+                button.addEventListener('click', () => {
+                    const link = button.getAttribute('data-link');
+                    button.innerText = 'Waiting...';
+                    button.disabled = true;
+
+                    setTimeout(() => {
+                        button.innerText = 'Completed';
+                        localStorage.setItem(`subscribed_${channel}`, 'true');
+                        updatePoints(150);  // Add 150 points
+                        window.location.href = link;
+                    }, 3000);
+                });
+            });
+
+            function updatePoints(points) {
+                let savedBalance = localStorage.getItem('balance');
+                let balance = savedBalance ? parseFloat(savedBalance.replace(',', '.')) : 0;
+                balance += points;
+                localStorage.setItem('balance', balance.toFixed(2).replace('.', ','));
+
+                let balanceElement = document.getElementById('balance');
+                if (balanceElement) {
+                    balanceElement.innerText = balance.toFixed(2).replace('.', ',');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

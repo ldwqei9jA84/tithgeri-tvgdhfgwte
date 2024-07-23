@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Усиления</title>
+    <link rel="stylesheet" href="stylesb.css">
+</head>
+<body>
+    <div class="container">
+        <div class="points">
+            <h2>Ваши очки</h2>
+            <h1 id="balance">0</h1>
+        </div>
+        <div class="boosts">
+            <h2>Усиления</h2>
+            <div class="boost" id="boost-recharge">
+                <div class="boost-info">
+                    <img src="multi.png" alt="Иконка Recharge">
+                    <div class="boost-details">
+                        <span class="boost-name">Recharge</span>
+                        <span class="boost-level" id="recharge-level">1 уровень → 2 уровень</span>
+                    </div>
+                </div>
+                <div class="boost-cost">
+                    <span id="recharge-cost">20</span>
+                    <img src="mor.png" alt="Иконка">
+                </div>
+            </div>
+            <div class="boost" id="boost-limit">
+                <div class="boost-info">
+                    <img src="limit.png" alt="Иконка Limit">
+                    <div class="boost-details">
+                        <span class="boost-name">Увеличение лимита</span>
+                        <span class="boost-level" id="limit-level">2500 → 3000</span>
+                    </div>
+                </div>
+                <div class="boost-cost">
+                    <span id="limit-cost">80</span>
+                    <img src="mor.png" alt="Иконка">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <div class="nav-button">
+            <img src="game-icon.png" alt="Иконка Майнера">
+            <a href="index.html"><span>Game</span></a>
+        </div>
+        
+        <div class="nav-button">
+            <img src="mine-icon.png" alt="Иконка Заработка">
+            <a href="earn.html"><span>Earn</span></a>
+        </div>
+        <div class="nav-button active">
+            <img src="boost-icon.png" alt="Иконка Усилений">
+            <span>Boost</span>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="modal-text">Вы хотите купить усиление?</p>
+            <button id="buy-boost">Купить</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            let savedBalance = localStorage.getItem('balance');
+            if (savedBalance !== null) {
+                document.getElementById('balance').innerText = parseFloat(savedBalance).toFixed(2).replace('.', ',');
+            }
+
+            let rechargeLevel = parseInt(localStorage.getItem('rechargeLevel')) || 1;
+            let rechargeCost = parseInt(localStorage.getItem('rechargeCost')) || 20;
+            updateBoostInfo('recharge', rechargeLevel, rechargeCost);
+
+            let maxEnergy = parseInt(localStorage.getItem('maxEnergy')) || 2500;
+            let limitCost = parseInt(localStorage.getItem('limitCost')) || 80;
+            updateBoostInfo('limit', maxEnergy, limitCost);
+
+            document.getElementById('boost-recharge').addEventListener('click', function() {
+                showModal('recharge', rechargeCost);
+            });
+
+            document.getElementById('boost-limit').addEventListener('click', function() {
+                showModal('limit', limitCost);
+            });
+
+            document.querySelector('.close').addEventListener('click', function() {
+                let modal = document.getElementById('modal');
+                modal.style.display = 'none';
+            });
+
+            document.getElementById('buy-boost').addEventListener('click', function() {
+                let balanceElement = document.getElementById('balance');
+                let balance = parseFloat(balanceElement.innerText.replace(',', '.'));
+                let modalText = document.getElementById('modal-text').innerText;
+
+                if (modalText.includes('Recharge')) {
+                    if (balance >= rechargeCost) {
+                        balance -= rechargeCost;
+                        localStorage.setItem('balance', balance.toFixed(2).replace('.', ','));
+                        balanceElement.innerText = balance.toFixed(2).replace('.', ',');
+
+                        rechargeLevel++;
+                        rechargeCost *= 2;
+
+                        localStorage.setItem('rechargeLevel', rechargeLevel);
+                        localStorage.setItem('rechargeCost', rechargeCost);
+                        localStorage.setItem('boostRecharge', 'true');
+
+                        updateBoostInfo('recharge', rechargeLevel, rechargeCost);
+
+                        alert('Вы успешно купили усиление Recharge!');
+                    } else {
+                        alert('Недостаточно очков для покупки этого усиления.');
+                    }
+                } else if (modalText.includes('Увеличение лимита')) {
+                    if (balance >= limitCost) {
+                        balance -= limitCost;
+                        localStorage.setItem('balance', balance.toFixed(2).replace('.', ','));
+                        balanceElement.innerText = balance.toFixed(2).replace('.', ',');
+
+                        maxEnergy += 500;
+                        limitCost *= 2;
+
+                        localStorage.setItem('maxEnergy', maxEnergy);
+                        localStorage.setItem('limitCost', limitCost);
+
+                        updateBoostInfo('limit', maxEnergy, limitCost);
+
+                        alert('Вы успешно купили усиление Увеличение лимита!');
+                    } else {
+                        alert('Недостаточно очков для покупки этого усиления.');
+                    }
+                }
+
+                let modal = document.getElementById('modal');
+                modal.style.display = 'none';
+            });
+        });
+
+        function showModal(type, cost) {
+            let modal = document.getElementById('modal');
+            let modalText = document.getElementById('modal-text');
+
+            if (type === 'recharge') {
+                modalText.innerText = `Вы хотите купить усиление Recharge за ${cost} очков?`;
+            } else if (type === 'limit') {
+                modalText.innerText = `Вы хотите купить усиление Увеличение лимита за ${cost} очков?`;
+            }
+
+            modal.style.display = 'block';
+        }
+
+        function updateBoostInfo(type, level, cost) {
+            if (type === 'recharge') {
+                document.getElementById('recharge-level').innerText = `${level} уровень → ${level + 1} уровень`;
+                document.getElementById('recharge-cost').innerText = cost;
+            } else if (type === 'limit') {
+                document.getElementById('limit-level').innerText = `${level} → ${level + 500}`;
+                document.getElementById('limit-cost').innerText = cost;
+            }
+        }
+    </script>
+</body>
+</html>
